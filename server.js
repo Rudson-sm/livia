@@ -70,6 +70,11 @@ app.delete("/api/admin/products/:id", (req, res) => {
   res.json({ message: "Produto removido." });
 });
 
+// A Vercel usa este app como Serverless Function. O servidor local continua
+// funcionando com `npm start`, mas não deve abrir uma porta quando importado.
+if (require.main !== module) app.listen = () => {};
+module.exports = app;
+
 app.get("*", (_req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
 app.listen(PORT, () => console.log(`Lívia Taiza Fitness disponível em http://localhost:${PORT}`));
